@@ -1,0 +1,49 @@
+#pragma once
+
+#include <Arduino.h>
+#include <ArduinoJson.h>
+
+enum class ChildFocusPage {
+  Selection,
+  Dashboard,
+  Task,
+  Waiting,
+  Celebrate,
+  Treats,
+  Reward,
+  Goals,
+  Skill,
+  Correction,
+  FirstThen,
+  Pin,
+};
+
+struct ChildFocusRuntime {
+  bool enabled = false;
+  bool active = false;
+  bool stale = false;
+  bool exitChallengeRequired = true;
+  bool childSwitchChallengeRequired = true;
+  bool profileSwitchingEnabled = true;
+  String selectedChildId;
+  String selectedTargetId;
+  bool writePending = false;
+  // True while the media pump still has slots to fetch, so empty image slots can
+  // be drawn as "loading" instead of "missing".
+  bool imagesPending = false;
+  String pendingAction;
+  String pendingTargetId;
+  String lastAuthoritativeFocus;
+  String lastAuthoritativeTargetId;
+  String lastSurfacedSkillCelebrationId;
+  ChildFocusPage page = ChildFocusPage::Selection;
+  ChildFocusPage pageBeforePin = ChildFocusPage::Selection;
+  unsigned long lastSuccessfulSyncMs = 0;
+  unsigned long lastInteractionMs = 0;
+};
+
+const JsonDocument& displayHomeFilter();
+const JsonDocument& childModeFilter();
+bool displayHomeValid(const JsonDocument& state);
+bool childModeValid(const JsonDocument& state, const String& expectedChildId);
+const char* childFocusPageName(ChildFocusPage page);

@@ -1,0 +1,44 @@
+# Dependencies & build artifacts
+node_modules/
+.pio/
+.vscode/
+.idea/
+*.tar.gz
+
+# Server runtime data
+server/data/
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+
+# Secrets & local config
+.env
+.env.*
+!.env.example
+firmware/include/secrets.h
+**/.env
+**/secrets.h
+!firmware/include/secrets.example.h
+!server/.env.example
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+*.swp
+*~
+
+# Verification evidence (may contain LAN details)
+docs/verification-evidence/*
+!docs/verification-evidence/README.md
+
+# Logs
+npm-debug.log*
+*.log
+
+# PlatformIO venv
+.venv-pio/
+
+# Agent / local tooling
+.agents/
+.codex/
+.cursor/

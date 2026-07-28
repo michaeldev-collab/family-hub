@@ -1,0 +1,23 @@
+[Unit]
+Description=Family Hub v0.1 API Server
+After=network.target
+
+[Service]
+Type=simple
+User=familyhub
+Group=familyhub
+WorkingDirectory=/opt/family-hub/server
+EnvironmentFile=-/opt/family-hub/server/.env
+Environment=NODE_ENV=production
+Environment=HOST=0.0.0.0
+Environment=PORT=3020
+Environment=DB_PATH=/var/lib/family-hub/family-hub.sqlite
+ExecStart=/usr/bin/node /opt/family-hub/server/app.js
+Restart=on-failure
+RestartSec=5
+
+# LAN-only — do not expose publicly without reverse proxy + TLS review
+NoNewPrivileges=true
+
+[Install]
+WantedBy=multi-user.target

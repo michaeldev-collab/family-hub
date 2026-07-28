@@ -1,0 +1,145 @@
+#include "child_focus_state.h"
+
+static bool childIsoDateValid(const char* value) {
+  if (!value || strlen(value) != 10 || value[4] != '-' || value[7] != '-') return false;
+  for (int i = 0; i < 10; ++i) {
+    if (i == 4 || i == 7) continue;
+    if (value[i] < '0' || value[i] > '9') return false;
+  }
+  return true;
+}
+
+const JsonDocument& displayHomeFilter() {
+  static JsonDocument filter;
+  static bool ready = false;
+  if (!ready) {
+    filter["sync"]["contractVersion"] = true;
+    filter["sync"]["contractRevision"] = true;
+    filter["sync"]["staleAfterSeconds"] = true;
+    filter["mode"]["childModeAvailable"] = true;
+    filter["mode"]["childModeEntryVisible"] = true;
+    filter["mode"]["entryChildId"] = true;
+    filter["mode"]["enterDirectlyWhenSingle"] = true;
+    filter["mode"]["profileSwitchingEnabled"] = true;
+    filter["mode"]["launchTarget"] = true;
+    filter["mode"]["refreshSeconds"] = true;
+    filter["mode"]["idleReturnSeconds"] = true;
+    filter["mode"]["returnToHomeWhenIdle"] = true;
+    filter["mode"]["exitChallengeRequired"] = true;
+    filter["mode"]["childSwitchChallengeRequired"] = true;
+    filter["children"][0]["id"] = true;
+    filter["children"][0]["displayName"] = true;
+    filter["children"][0]["displayColor"] = true;
+    filter["children"][0]["avatarEmoji"] = true;
+    filter["children"][0]["profileMediaRef"] = true;
+    filter.shrinkToFit();
+    ready = true;
+  }
+  return filter;
+}
+
+const JsonDocument& childModeFilter() {
+  static JsonDocument filter;
+  static bool ready = false;
+  if (!ready) {
+    filter["sync"]["contractVersion"] = true;
+    filter["sync"]["contractRevision"] = true;
+    filter["sync"]["staleAfterSeconds"] = true;
+    filter["mode"] = true;
+    filter["config"]["preset"] = true;
+    filter["config"]["taskGridVisible"] = true;
+    filter["config"]["interactionsEnabled"] = true;
+    filter["config"]["starCountStyle"] = true;
+    filter["child"]["id"] = true;
+    filter["child"]["displayName"] = true;
+    filter["child"]["displayColor"] = true;
+    filter["child"]["avatarEmoji"] = true;
+    filter["child"]["profileMediaRef"] = true;
+    filter["taskDate"] = true;
+    filter["starBalance"] = true;
+    filter["focus"] = true;
+    filter["tasks"][0]["assignmentId"] = true;
+    filter["tasks"][0]["label"] = true;
+    filter["tasks"][0]["mediaRef"] = true;
+    filter["tasks"][0]["required"] = true;
+    filter["tasks"][0]["starValue"] = true;
+    filter["tasks"][0]["completion"]["status"] = true;
+    filter["taskActions"]["canRequestTask"] = true;
+    filter["rewards"][0]["id"] = true;
+    filter["rewards"][0]["name"] = true;
+    filter["rewards"][0]["rewardType"] = true;
+    filter["rewards"][0]["mediaRef"] = true;
+    filter["rewards"][0]["cost"] = true;
+    filter["rewards"][0]["selectionAllowed"] = true;
+    filter["rewards"][0]["goal"]["id"] = true;
+    filter["rewards"][0]["goal"]["status"] = true;
+    filter["rewards"][0]["goal"]["ready"] = true;
+    filter["rewardActions"]["canSelectReward"] = true;
+    filter["rewardActions"]["canRequestReward"] = true;
+    filter["daily"] = true;
+    filter["term"] = true;
+    filter["activeCorrection"] = true;
+    filter["skillGoals"][0]["id"] = true;
+    filter["skillGoals"][0]["title"] = true;
+    filter["skillGoals"][0]["icon"] = true;
+    filter["skillGoals"][0]["mediaRef"] = true;
+    filter["skillGoals"][0]["progress"] = true;
+    filter["skillGoals"][0]["target"] = true;
+    filter["skillGoals"][0]["state"] = true;
+    filter["skillGoals"][0]["recentDecision"] = true;
+    filter["skillGoals"][0]["allowedAction"] = true;
+    filter["todayPositiveProgress"] = true;
+    filter["todaySkillProgress"] = true;
+    filter["recentSkillCelebration"]["id"] = true;
+    filter["recentSkillCelebration"]["goalId"] = true;
+    filter["recentSkillCelebration"]["title"] = true;
+    filter["allowedChildActions"][0] = true;
+    filter.shrinkToFit();
+    ready = true;
+  }
+  return filter;
+}
+
+bool displayHomeValid(const JsonDocument& state) {
+  if (!state.is<JsonObjectConst>()) return false;
+  return state["sync"]["contractVersion"].as<int>() == 1 &&
+         state["children"].is<JsonArrayConst>() && state["mode"].is<JsonObjectConst>();
+}
+
+bool childModeValid(const JsonDocument& state, const String& expectedChildId) {
+  if (!state.is<JsonObjectConst>()) return false;
+  const char* id = state["child"]["id"] | "";
+  const char* taskDate = state["taskDate"] | "";
+  const int revision = state["sync"]["contractRevision"].as<int>();
+  JsonVariantConst goals = state["skillGoals"];
+  if (!goals.isNull() && (!goals.is<JsonArrayConst>() || goals.as<JsonArrayConst>().size() > 3)) {
+    return false;
+  }
+  if (revision >= 3 && !goals.is<JsonArrayConst>()) return false;
+  JsonVariantConst actions = state["allowedChildActions"];
+  if (!actions.isNull() && (!actions.is<JsonArrayConst>() || actions.as<JsonArrayConst>().size() > 4)) {
+    return false;
+  }
+  return state["sync"]["contractVersion"].as<int>() == 1 && revision >= 2 &&
+         childIsoDateValid(taskDate) &&
+         state["mode"].as<String>() == "child_focus" && expectedChildId == id &&
+         state["focus"].is<JsonObjectConst>();
+}
+
+const char* childFocusPageName(ChildFocusPage page) {
+  switch (page) {
+    case ChildFocusPage::Selection: return "selection";
+    case ChildFocusPage::Dashboard: return "dashboard";
+    case ChildFocusPage::Task: return "task";
+    case ChildFocusPage::Waiting: return "waiting";
+    case ChildFocusPage::Celebrate: return "celebrate";
+    case ChildFocusPage::Treats: return "treats";
+    case ChildFocusPage::Reward: return "reward";
+    case ChildFocusPage::Goals: return "goals";
+    case ChildFocusPage::Skill: return "skill";
+    case ChildFocusPage::Correction: return "correction";
+    case ChildFocusPage::FirstThen: return "first_then";
+    case ChildFocusPage::Pin: return "pin";
+  }
+  return "selection";
+}

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0a1a0e" />
+  <title>Family Hub · 3D Design Labs</title>
+  <link rel="icon" type="image/png" href="/assets/3dl-brand-icon-128.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Barlow+Condensed:wght@600;700;800;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/app.css?v=20260727-setup1" />
+</head>
+<body class="login-only">
+  <!-- Easter egg: look for INCIDENT_LOG.md [RECOVERED] in the background (bottom-left) -->
+  <div id="loginGate" class="login-gate">
+    <div class="login-gate-panel">
+      <div class="login-gate-brand">
+        <img class="brand-mark" src="/assets/3dl-brand-icon-128.png" alt="3D Design Labs" width="48" height="48" />
+        <div class="brand-text">
+          <strong>Family Hub</strong>
+          <em>3D Design Labs</em>
+        </div>
+      </div>
+      <p class="login-gate-lead muted" id="loginGateLead">Checking session…</p>
+      <div id="clerkSignInMount" class="login-gate-clerk"></div>
+      <p class="login-gate-switch muted" id="loginGateSignUpRow" hidden>
+        New here?
+        <button type="button" id="loginGateSignUp" class="btn-link">Create an account</button>
+      </p>
+      <div id="clerkSignUpMount" class="login-gate-clerk" hidden></div>
+      <p class="login-gate-switch muted" id="loginGateBackRow" hidden>
+        Already have an account?
+        <button type="button" id="loginGateSignIn" class="btn-link">Sign in</button>
+      </p>
+    </div>
+  </div>
+
+  <div id="hubShell" class="hub-shell" hidden>
+  <header class="topbar">
+    <div class="brand">
+      <img class="brand-mark" src="/assets/3dl-brand-icon-128.png" alt="3D Design Labs" width="34" height="34" />
+      <span class="brand-text">
+        <strong>Family Hub</strong>
+        <em>3D Design Labs</em>
+      </span>
+    </div>
+    <div id="statusBar" class="status-bar" aria-live="polite">
+      <span id="connDot" class="dot dot-offline"></span>
+      <span id="connText">Connecting…</span>
+      <span id="authBar" class="auth-bar" hidden>
+        <span id="authLabel" class="auth-label muted"></span>
+        <div id="authUserButton" class="auth-user-button" hidden></div>
+        <button type="button" id="authSignOut" class="btn secondary auth-btn" hidden>Sign out</button>
+      </span>
+    </div>
+  </header>
+
+  <nav class="tabs" role="tablist">
+    <button id="tab-home" class="tab active" data-view="home" role="tab" aria-selected="true" aria-controls="app" tabindex="0"><span class="tab-icon" style="--icon-url:url('/assets/icons/home.svg')"></span><span class="tab-label">Home</span></button>
+    <button id="tab-grocery" class="tab" data-view="grocery" role="tab" aria-selected="false" aria-controls="app" tabindex="-1"><span class="tab-icon" style="--icon-url:url('/assets/icons/grocery.svg')"></span><span class="tab-label">Grocery</span></button>
+    <button id="tab-chores" class="tab" data-view="chores" role="tab" aria-selected="false" aria-controls="app" tabindex="-1"><span class="tab-icon" style="--icon-url:url('/assets/icons/chores.svg')"></span><span class="tab-label">Chores</span></button>
+    <button id="tab-dinner" class="tab" data-view="dinner" role="tab" aria-selected="false" aria-controls="app" tabindex="-1"><span class="tab-icon" style="--icon-url:url('/assets/icons/dinner.svg')"></span><span class="tab-label">Dinner</span></button>
+    <button id="tab-notes" class="tab" data-view="notes" role="tab" aria-selected="false" aria-controls="app" tabindex="-1"><span class="tab-icon" style="--icon-url:url('/assets/icons/notes.svg')"></span><span class="tab-label">Notes</span></button>
+    <button id="tab-setup" class="tab" data-view="setup" role="tab" aria-selected="false" aria-controls="app" tabindex="-1"><span class="tab-icon" style="--icon-url:url('/assets/icons/setup.svg')"></span><span class="tab-label">Setup</span></button>
+  </nav>
+
+  <main id="app" class="app" role="tabpanel" aria-labelledby="tab-home" tabindex="-1"></main>
+  </div>
+
+  <div id="toast" class="toast flash hidden" role="status" aria-live="polite"></div>
+
+  <script src="/js/api.js?v=20260727-setup1"></script>
+  <script src="/js/auth.js?v=20260727-setup1"></script>
+  <script src="/js/views.js?v=20260727-setup1"></script>
+  <script src="/js/app.js?v=20260727-setup1"></script>
+</body>
+</html>

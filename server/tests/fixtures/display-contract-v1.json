@@ -1,0 +1,40 @@
+{
+  "contractVersion": 1,
+  "routes": [
+    "/rewards-behavior/home",
+    "/children",
+    "/children/:id",
+    "/children/:id/tasks",
+    "/children/:id/rewards",
+    "/children/:id/progress",
+    "/children/:id/active-correction",
+    "/child-mode/:id"
+  ],
+  "actionRoutes": [
+    "/actions/complete-task",
+    "/actions/select-reward",
+    "/actions/request-reward",
+    "/actions/acknowledge",
+    "/actions/request-recovery",
+    "/actions/request-skill-observation",
+    "/actions/verify-parent-pin"
+  ],
+  "childModeRequiredKeys": ["sync", "mode", "config", "child", "taskDate", "focus", "tasks", "taskActions", "rewards", "rewardActions", "daily", "term", "activeCorrection", "skillGoals", "todayPositiveProgress", "todaySkillProgress", "recentSkillCelebration", "allowedChildActions"],
+  "modeConfigRequiredKeys": ["preset", "taskGridVisible", "interactionsEnabled", "starCountStyle"],
+  "bounds": { "children": 8, "tasks": 12, "rewards": 24, "listBytes": 12288, "childModeBytes": 24576 },
+  "requiredSyncKeys": ["contractVersion", "contractRevision", "generatedAt", "staleAfterSeconds", "sourceOfTruth", "deviceId"],
+  "forbiddenKeys": [
+    "parent_note", "parentNote", "parent_description", "parentDescription", "note",
+    "rejection_reason", "decline_reason", "cancellation_reason", "resolution",
+    "recorded_by", "issued_by", "approved_by", "rejected_by", "declined_by",
+    "resolved_by", "cancelled_by", "completed_by", "audit_events", "metadata_json",
+    "schedule_config", "exceptions_config", "term_config", "availability_config",
+    "original_path", "panel_path", "thumbnail_path", "thumbnailRef", "settings",
+    "created_by_session", "createdBySession", "ended_by_session", "endedBySession",
+    "pin_hash", "pinHash", "salt", "token", "csrfToken",
+    "context", "antecedent", "observableBehavior", "responseDescription",
+    "recordedBy", "behaviorHistory", "analytics",
+    "defaultChildId", "requirePinExit", "requirePinChangeChild", "restartMode",
+    "childDashboardTimeoutSeconds", "syncIntervalSeconds"
+  ]
+}

@@ -1,0 +1,166 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://family-hub.local/schemas/dashboard-v1.schema.json",
+  "title": "FamilyHubDashboardViewModelV1",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema_version",
+    "state_version",
+    "generated_at",
+    "server_version",
+    "today",
+    "home",
+    "grocery",
+    "chores",
+    "dinner",
+    "notes",
+    "connection"
+  ],
+  "properties": {
+    "schema_version": { "type": "integer", "const": 1 },
+    "state_version": { "type": "integer", "minimum": 0 },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "server_version": { "type": "string", "minLength": 1 },
+    "today": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
+    "home": { "$ref": "#/$defs/homeVm" },
+    "grocery": { "$ref": "#/$defs/groceryVm" },
+    "chores": { "$ref": "#/$defs/choresVm" },
+    "dinner": { "$ref": "#/$defs/dinnerVm" },
+    "notes": { "$ref": "#/$defs/notesVm" },
+    "connection": {
+      "type": "object",
+      "required": ["sourceOfTruth"],
+      "additionalProperties": true,
+      "properties": {
+        "sourceOfTruth": { "type": "string", "const": "server" }
+      }
+    }
+  },
+  "$defs": {
+    "textItem": {
+      "type": "object",
+      "required": ["text"],
+      "additionalProperties": true,
+      "properties": {
+        "text": { "type": "string" }
+      }
+    },
+    "homeVm": {
+      "type": "object",
+      "required": [
+        "dinner_today",
+        "dinner_cook",
+        "open_chores_count",
+        "grocery_count",
+        "pinned",
+        "badge"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "dinner_today": { "type": ["string", "null"] },
+        "dinner_cook": { "type": ["string", "null"] },
+        "open_chores_count": { "type": "integer", "minimum": 0 },
+        "grocery_count": { "type": "integer", "minimum": 0 },
+        "pinned": {
+          "type": "array",
+          "maxItems": 5,
+          "items": { "$ref": "#/$defs/textItem" }
+        },
+        "badge": {
+          "type": "string",
+          "enum": ["ONLINE", "STALE", "OFFLINE"]
+        }
+      }
+    },
+    "groceryVm": {
+      "type": "object",
+      "required": ["items"],
+      "additionalProperties": true,
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["text"],
+            "additionalProperties": true,
+            "properties": {
+              "id": { "type": "string" },
+              "text": { "type": "string" },
+              "checked": { "type": "boolean" }
+            }
+          }
+        }
+      }
+    },
+    "choresVm": {
+      "type": "object",
+      "required": ["items"],
+      "additionalProperties": true,
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "title"],
+            "additionalProperties": true,
+            "properties": {
+              "id": { "type": "string", "minLength": 1 },
+              "title": { "type": "string" },
+              "assignee_name": { "type": ["string", "null"] }
+            }
+          }
+        }
+      }
+    },
+    "dinnerVm": {
+      "type": "object",
+      "required": ["today", "week"],
+      "additionalProperties": true,
+      "properties": {
+        "today": {
+          "oneOf": [
+            { "type": "null" },
+            {
+              "type": "object",
+              "required": ["date", "meal"],
+              "additionalProperties": true,
+              "properties": {
+                "date": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
+                "meal": { "type": "string" },
+                "cook_name": { "type": ["string", "null"] }
+              }
+            }
+          ]
+        },
+        "week": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["date", "meal"],
+            "additionalProperties": true,
+            "properties": {
+              "date": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
+              "meal": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "notesVm": {
+      "type": "object",
+      "required": ["pinned", "recent"],
+      "additionalProperties": true,
+      "properties": {
+        "pinned": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/textItem" }
+        },
+        "recent": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/textItem" }
+        }
+      }
+    }
+  }
+}
