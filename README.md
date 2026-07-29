@@ -44,6 +44,15 @@ LAN + PANEL_TOKEN              Optional WRITE_TOKEN      Optional tunnel
 
 Panel mutations are restricted to **chore completion** and **grocery-state toggles**. App tab URL + QR prefer the public app URL when the server publishes `public_app_url`.
 
+## Security
+
+Household product security is documented for portfolio review (no live secrets or home network details):
+
+- [Threat model](./docs/security/threat-model.md) — assets, trust boundaries, attack scenarios, STRIDE
+- [Security pass (sanitized)](./docs/security/security-pass.md) — findings, fixes, accepted residual risk
+
+Highlights: Clerk for browser humans vs LAN panel token; panel credentials rejected on the public tunnel; header-only tokens (no `?token=` in logs); panel cannot perform admin CRUD; safety boundaries keep locks/HVAC out of scope.
+
 ## Hardware (wall case)
 
 Parametric OpenSCAD enclosure for the Waveshare 7B: adhesive panel mount, two Velcro Command strips to the wall, MX switch bay, open access for USB-C / Boot / Reset / SD.
@@ -92,6 +101,8 @@ More deploy notes: [`docs/endeavor-deploy.md`](./docs/endeavor-deploy.md).
 
 ## Documentation
 
+- [Threat model](./docs/security/threat-model.md)
+- [Security pass](./docs/security/security-pass.md)
 - [Panel API contracts](./docs/api/panel-contracts.md)
 - [ADRs](./docs/adr/README.md)
 - [Clerk + Cloudflare](./docs/auth-clerk-cloudflare.md)
