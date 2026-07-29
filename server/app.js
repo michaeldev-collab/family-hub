@@ -7,6 +7,7 @@ const { initDb } = require('./db/init');
 const { closeDb } = require('./db/connection');
 const requestLogger = require('./middleware/requestLogger');
 const { securityHeaders } = require('./middleware/securityHeaders');
+const { createWriteRateLimit } = require('./middleware/rateLimit');
 
 const healthRoutes = require('./routes/health.routes');
 const dashboardRoutes = require('./routes/dashboard.routes');
@@ -41,6 +42,10 @@ function createApp() {
   }
 
   app.use('/api', rejectPanelViaTunnel);
+  app.use('/api', createWriteRateLimit({
+    windowMs: config.rateLimitWindowMs,
+    max: config.rateLimitMaxWrites,
+  }));
 
   app.use(
     express.static(path.join(__dirname, '..', 'web'), {

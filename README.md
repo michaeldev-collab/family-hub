@@ -51,7 +51,7 @@ Household product security is documented for portfolio review (no live secrets o
 - [Threat model](./docs/security/threat-model.md) — assets, trust boundaries, attack scenarios, STRIDE
 - [Security pass (sanitized)](./docs/security/security-pass.md) — findings, fixes, accepted residual risk
 
-Highlights: Clerk for browser humans vs LAN panel token; panel credentials rejected on the public tunnel; header-only tokens (no `?token=` in logs); panel cannot perform admin CRUD; safety boundaries keep locks/HVAC out of scope.
+Highlights: Clerk for browser humans vs LAN panel token; panel credentials rejected on the public tunnel; header-only tokens (no `?token=` in logs); write rate limits on `/api`; panel cannot perform admin CRUD; safety boundaries keep locks/HVAC out of scope.
 
 ## Hardware (wall case)
 

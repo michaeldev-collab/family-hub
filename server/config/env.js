@@ -60,8 +60,18 @@ function parseCsv(raw) {
 const clerkSecretKey = process.env.CLERK_SECRET_KEY || '';
 const clerkPublishableKey = process.env.CLERK_PUBLISHABLE_KEY || '';
 const clerkEnabled = Boolean(clerkSecretKey);
-const clerkTestBypass =
-  process.env.CLERK_TEST_BYPASS === 'true' && NODE_ENV !== 'production';
+
+// Test bypass is NODE_ENV=test only. Never honor it in development/production.
+const bypassRequested = process.env.CLERK_TEST_BYPASS === 'true';
+if (bypassRequested && NODE_ENV !== 'test') {
+  console.warn(
+    '[family-hub] CLERK_TEST_BYPASS ignored — only allowed when NODE_ENV=test'
+  );
+}
+if (bypassRequested && NODE_ENV === 'production') {
+  throw new Error('CLERK_TEST_BYPASS must not be enabled in production');
+}
+const clerkTestBypass = bypassRequested && NODE_ENV === 'test';
 
 module.exports = Object.freeze({
   nodeEnv: NODE_ENV,
@@ -86,6 +96,9 @@ module.exports = Object.freeze({
   // Reject PANEL_TOKEN when request carries Cloudflare headers (tunnel).
   rejectPanelViaTunnel: process.env.REJECT_PANEL_VIA_TUNNEL !== 'false',
   publicAppUrl: process.env.PUBLIC_APP_URL || '',
+  // Write rate limit (panel GETs unaffected).
+  rateLimitWindowMs: Number(process.env.RATE_LIMIT_WINDOW_MS) || 60_000,
+  rateLimitMaxWrites: Number(process.env.RATE_LIMIT_MAX_WRITES) || 180,
   version: '0.1.0',
   startedAt: new Date().toISOString(),
 });

@@ -27,9 +27,12 @@ This note is a **sanitized** pass for portfolio readers. It describes what was c
 | SP-02 | Medium | Panel credential usable on public ingress if operator pointed firmware at tunnel URL | **Mitigated** — reject panel token when Cloudflare headers present (default on) |
 | SP-03 | Low | Portfolio docs exposed local absolute archive paths | **Fixed** — scrubbed; restore notes stay private |
 | SP-04 | Low | Product-boundary docs mixed live household vs archived rewards/child design | **Fixed** — historical design moved under `archive/` |
-| SP-05 | Info | LAN trust with empty tokens is powerful on a shared Wi‑Fi | **Accepted** — documented; Clerk / `WRITE_TOKEN` available |
+| SP-05 | Info | LAN trust with empty tokens is powerful on a shared Wi‑Fi | **Accepted** — documented; Clerk / `WRITE_TOKEN` / optional `CLERK_ALLOWED_USER_IDS` |
 | SP-06 | Info | Admin SPA CSP allows `'unsafe-inline'` (Clerk / simple static UI) | **Accepted** — monitored; tighten if SPA grows |
 | SP-07 | Info | No TLS on LAN panel hops | **Accepted** — tunnel terminates TLS for browsers |
+| SP-08 | Low | `CLERK_TEST_BYPASS` could be enabled outside automated tests | **Fixed** — honored only when `NODE_ENV=test`; throws in production |
+| SP-09 | Low | No write-rate limiting on API | **Fixed** — in-memory limit on non-GET `/api` (default 180/min/IP; GETs unlimited for panel poll) |
+| SP-10 | Info | No CI audit/test gate on the public repo | **Fixed** — GitHub Actions runs `npm test` + `npm audit` |
 
 ---
 
@@ -45,7 +48,9 @@ This note is a **sanitized** pass for portfolio readers. It describes what was c
 | Role separation | Kid blocked from member / Setup-sensitive paths when Clerk enabled |
 | Security headers | `server/middleware/securityHeaders.js` + `server/tests/security-headers.test.js` |
 | Secrets out of git | `.gitignore` for `.env`, `secrets.h`, SQLite under `server/data/` |
-| Thin panel mutations | Contracts/ADRs limit panel to chore complete + grocery toggle |
+| Write rate limit (non-GET `/api`) | `server/middleware/rateLimit.js` + `server/tests/rate-limit.test.js` |
+| Test bypass confined to `NODE_ENV=test` | `server/config/env.js` + `server/tests/env-bypass.test.js` |
+| CI test + audit | `.github/workflows/ci.yml` |
 
 ---
 
@@ -63,11 +68,10 @@ This note is a **sanitized** pass for portfolio readers. It describes what was c
 
 | Item | Notes |
 | --- | --- |
-| Rate limiting | Not first-class; rely on household scale + edge (Cloudflare) for public login |
 | mTLS or per-device panel identity | Shared `PANEL_TOKEN` is enough for one wall unit; rotate on loss |
-| Encrypted-at-rest SQLite | Operator / OS responsibility |
-| Dependency / container scanning in CI | Nice-to-have for the public repo; local tests cover auth regressions today |
+| Encrypted-at-rest SQLite | Operator / OS responsibility (FDE) |
 | CSP without `'unsafe-inline'` | Requires SPA packaging work |
+| Distributed rate limits | In-memory is enough for single-host household |
 
 ---
 
@@ -85,7 +89,9 @@ Manual checklist:
 1. With Clerk on: unauthenticated write → 401.  
 2. With `PANEL_TOKEN` set: LAN complete/toggle OK; same call with CF-Ray header → 403.  
 3. Confirm `.env` / `secrets.h` / `*.sqlite` are untracked.  
-4. Confirm panel firmware host is LAN, not the public app URL.
+4. Confirm panel firmware host is LAN, not the public app URL.  
+5. If the wall panel is lost/stolen: rotate `PANEL_TOKEN` (server + panel NVS) and review Wi‑Fi credentials.  
+6. Prefer setting `CLERK_ALLOWED_USER_IDS` for the household’s Clerk user ids.
 
 ---
 
