@@ -29,6 +29,7 @@ LAN + PANEL_TOKEN              Optional WRITE_TOKEN      Optional tunnel
 | API + DB | [`server/`](./server/) | Source of truth |
 | Web admin | [`web/`](./web/) | Browser UI (served by the server) |
 | Panel firmware | [`firmware/`](./firmware/) | Thin LVGL client (Waveshare primary) |
+| Hardware / case | [`hardware/`](./hardware/) | OpenSCAD wall case + measurements |
 | Docs | [`docs/`](./docs/) | Contracts, ADRs, deploy notes |
 | Deploy | [`deploy/`](./deploy/) | systemd unit examples |
 
@@ -42,6 +43,13 @@ LAN + PANEL_TOKEN              Optional WRITE_TOKEN      Optional tunnel
 | Wall panel | LAN + optional `PANEL_TOKEN` / write token via `x-family-hub-token` header only — no query-string tokens, no OAuth on-device |
 
 Panel mutations are restricted to **chore completion** and **grocery-state toggles**. App tab URL + QR prefer the public app URL when the server publishes `public_app_url`.
+
+## Hardware (wall case)
+
+Parametric OpenSCAD enclosure for the Waveshare 7B: adhesive panel mount, two Velcro Command strips to the wall, MX switch bay, open access for USB-C / Boot / Reset / SD.
+
+- Source: [`hardware/cad/family-hub-7b-case.scad`](./hardware/cad/family-hub-7b-case.scad)
+- Notes: [`hardware/docs/case-7b.md`](./hardware/docs/case-7b.md)
 
 ## Panel gestures (Waveshare)
 
