@@ -10,9 +10,9 @@ Waveshare ESP32-S3 panel (1024×600) is a wall glance + constrained input device
 
 ## Decision
 
-The household panel renders fixed LVGL screens from **typed server view models** (`schema_version` + nested VMs) and performs only **one** mutation: chore complete.
+The household panel renders fixed LVGL screens from **typed server view models** (`schema_version` + nested VMs). Panel mutations are restricted to **chore completion** and **grocery-state toggles**.
 
-It does not CRUD members/grocery/dinner/notes, run rewards/child flows, or execute server-driven UI blocks.
+It does not CRUD members/dinner/notes, create/edit chore definitions, run rewards/child flows, or execute server-driven UI blocks.
 
 ## Consequences
 

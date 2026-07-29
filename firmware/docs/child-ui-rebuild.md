@@ -1,7 +1,8 @@
 # Child UI rebuild — ARCHIVED
 
 > **ARCHIVED 2026-07-26.** Child panel is out of the live Family Hub tree.
-> Restore path: `/run/media/stitch/data3/Operating/pi-iot/family-hub-child-panel-archive-20260726/`
+> The previous subsystem was archived outside the public repository. Restore
+> documentation remains in the private project archive.
 > See also repo root `archive/CHILD_PANEL_MOVED.md` and `docs/panel-ux-cleanup-addendum.md`.
 
 ## Scope (historical)

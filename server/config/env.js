@@ -70,7 +70,7 @@ module.exports = Object.freeze({
   host: process.env.HOST || '0.0.0.0',
   dbPath: process.env.DB_PATH || DEFAULT_DB_PATH,
   writeToken: process.env.WRITE_TOKEN || '',
-  // Scoped credential for household chore completion only.
+  // Scoped credential for panel mutations (chore complete + grocery toggle).
   panelToken: process.env.PANEL_TOKEN || '',
   n8nReminderWebhookUrl: process.env.N8N_REMINDER_WEBHOOK_URL || '',
   remindersEnabled: process.env.REMINDERS_ENABLED === 'true',

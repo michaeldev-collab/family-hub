@@ -12,7 +12,7 @@ Creating and editing household data on a 1024×600 wall panel is high-friction a
 
 All create/edit/delete for members, grocery, chores (definitions), dinner, notes, and settings configuration happen in the **browser admin** (SPA served by the server).
 
-Panel actions are limited to: navigation, sync/refresh, sleep/wake/diagnostics gestures, and **chore complete**.
+Panel actions are limited to: navigation, sync/refresh, sleep/wake/diagnostics gestures, **chore complete**, and **grocery-state toggle**.
 
 ## Consequences
 

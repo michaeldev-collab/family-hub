@@ -3,7 +3,7 @@
 **Status:** Phase 0 product lock (docs only)  
 **Date:** 2026-07-26  
 **Owner:** CPO (product) → CTO (Execute Phases 1–3)  
-**Reference product:** Bedroom Calendar Hub at `/run/media/stitch/data3/Operating/pi-iot/calender-display`  
+**Reference product:** Bedroom Calendar Hub (private sibling project — patterns only; not in this repo)  
 **Scope:** **Household-only.** Rewards/behavior and child panel stay archived (see [archive/REWARDS_BEHAVIOR_MOVED.md](../archive/REWARDS_BEHAVIOR_MOVED.md), [archive/CHILD_PANEL_MOVED.md](../archive/CHILD_PANEL_MOVED.md)).
 
 This addendum does **not** rewrite [architecture-book.md](architecture-book.md). It locks the panel UX cleanup direction so firmware work has a product gate.
@@ -27,7 +27,7 @@ Patterns to adopt. Cite calendar paths; do not merge repos.
 | Real sleep (not backlight-only) | `firmware/src/board/display_driver.cpp` (`enterSleep`), `firmware/src/board/lvgl_shell.cpp` | Black fill ×2 + settle → backlight 0 → pause LVGL flushes → wake full redraw |
 | Diagnostics overlay + fail-open | `firmware/src/main.cpp` boot / `pollDiagGesture` | Gesture toggle; invalid home → Diagnostics, not fake Home |
 | Deferred UI outside LVGL callbacks | `firmware/include/ui_shell.h` (`uiShellPoll`) | Avoid stack overflow / re-entrancy |
-| Web owns editing; panel mutations minimal | `docs/adr/006-web-owns-editing.md` | Panel: chore complete only |
+| Web owns editing; panel mutations minimal | `docs/adr/006-web-owns-editing.md` | Panel: chore complete + grocery toggle |
 | Per-screen layout specs | `docs/screens/*-800x480.md` | FH `docs/screens/` in Phase 3 |
 
 ---

@@ -45,9 +45,10 @@ router.delete('/:id', optionalWriteAuth, (req, res) => {
   return res.status(204).end();
 });
 
-// Dedicated, panel-scoped completion. This is the ONLY mutation the ESP32
-// panel may perform. It cannot create, edit, reassign, reprioritize, reopen,
-// or delete — completeChore() touches only the completion columns.
+// Dedicated, panel-scoped completion. Panel mutations are restricted to chore
+// completion and grocery-state toggles (see grocery.routes.js). This route
+// cannot create, edit, reassign, reprioritize, reopen, or delete — completeChore()
+// touches only the completion columns.
 //
 // Idempotent without a key: already-complete → 200.
 // With idempotency_key: duplicate posts replay the cached JSON body.

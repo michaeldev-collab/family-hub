@@ -4,7 +4,15 @@ Family Hub is a household operations hub: grocery lists, chores, dinner plans, a
 
 The browser admin UI is for humans. The panel stays on the LAN. Optional Cloudflare Tunnel + Clerk cover signed-in access from outside the house.
 
-> **Gallery (coming)** — case photos and UI shots land after the enclosure is finished. This public cut is text-first for now.
+## Gallery
+
+Architecture diagram and browser admin UI. Waveshare panel hardware / on-device UI close-ups are still pending — use the real panel only (no stand-in displays).
+
+![Family Hub architecture](./docs/portfolio/architecture.png)
+
+| Home | Grocery | Chores |
+| --- | --- | --- |
+| ![Home](./docs/portfolio/web-home.png) | ![Grocery](./docs/portfolio/web-grocery.png) | ![Chores](./docs/portfolio/web-chores.png) |
 
 ## Architecture
 
@@ -12,7 +20,7 @@ The browser admin UI is for humans. The panel stays on the LAN. Optional Cloudfl
 Waveshare panel (ESP32-S3)     Local server              Browser
 ──────────────────────────     ────────────              ───────
 LVGL UI, gestures, sleep       Express + SQLite SoT      Admin CRUD
-HTTP poll + chore complete     Panel contracts (VMs)     Clerk session
+HTTP poll + chore/grocery     Panel contracts (VMs)     Clerk session
 LAN + PANEL_TOKEN              Optional WRITE_TOKEN      Optional tunnel
 ```
 
@@ -24,16 +32,16 @@ LAN + PANEL_TOKEN              Optional WRITE_TOKEN      Optional tunnel
 | Docs | [`docs/`](./docs/) | Contracts, ADRs, deploy notes |
 | Deploy | [`deploy/`](./deploy/) | systemd unit examples |
 
-**Household-only.** Rewards/behavior and child-panel products were archived and are not part of the live tree — see [`archive/`](./archive/).
+**Household-only.** Rewards/behavior and child-panel products were archived and are not part of the live tree — see [`archive/`](./archive/). Historical reward/discipline design notes live in [`archive/reward-discipline-architecture-historical.md`](./archive/reward-discipline-architecture-historical.md).
 
 ## Auth split
 
 | Client | Auth |
 | --- | --- |
 | Browser humans | Optional [Clerk](./docs/auth-clerk-cloudflare.md) (+ Cloudflare Tunnel) |
-| Wall panel | LAN + optional `PANEL_TOKEN` / write token — no OAuth on-device |
+| Wall panel | LAN + optional `PANEL_TOKEN` / write token via `x-family-hub-token` header only — no query-string tokens, no OAuth on-device |
 
-Panel App tab URL + QR prefer the public app URL when the server publishes `public_app_url`.
+Panel mutations are restricted to **chore completion** and **grocery-state toggles**. App tab URL + QR prefer the public app URL when the server publishes `public_app_url`.
 
 ## Panel gestures (Waveshare)
 

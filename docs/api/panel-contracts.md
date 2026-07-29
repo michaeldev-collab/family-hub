@@ -5,7 +5,7 @@
 **Content-Type:** `application/json`  
 **Scope:** Household panel only. Rewards/child APIs stay archived.
 
-Panel must not call web admin CRUD. Web owns editing; panel mutation = chore complete only.
+Panel must not call web admin CRUD. Web owns editing. Panel mutations are restricted to chore completion and grocery-state toggles.
 
 ---
 
@@ -81,9 +81,12 @@ Machine schema (Ajv): [schemas/dashboard-v1.schema.json](schemas/dashboard-v1.sc
 
 ## Mutations (panel)
 
+Panel mutations are restricted to chore completion and grocery-state toggles.
+
 | Method | Path | Purpose |
 |--------|------|---------|
 | POST | `/api/chores/{id}/complete` | Mark chore complete |
+| POST | `/api/grocery/{id}/toggle` | Toggle grocery checked state |
 
 Optional JSON body:
 

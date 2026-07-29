@@ -3,7 +3,7 @@
 const config = require('../config/env');
 
 function tokenFromRequest(req) {
-  return req.get('x-family-hub-token') || req.query.token || '';
+  return req.get('x-family-hub-token') || '';
 }
 
 function isCloudflareProxied(req) {

@@ -38,13 +38,17 @@ server auth plane) — gated by CEO ★ / CISO; not enabled in this firmware pas
 5. Flash: `pio run -e waveshare7b -t upload` (recovery: hold BOOT, tap RESET, release BOOT, retry)
 6. Monitor: `pio device monitor -b 115200`
 
-## Panel role: view-only except chore completion (+ Settings)
+## Panel role: view-only except chore complete + grocery toggle (+ Settings)
 
-The ESP32 panel is a **view-only household dashboard**. It reads and displays
-dashboard state (chores, grocery, dinner, notes, members) and performs exactly
-**one** server mutation: marking an existing chore complete, via the dedicated
-endpoint `POST /api/chores/{id}/complete`. All creation, editing, deletion,
-assignment, and household content configuration happen in the **Family Hub web UI**.
+The ESP32 panel is a **glance + limited-mutation household dashboard**. It reads and
+displays dashboard state (chores, grocery, dinner, notes, members) and performs
+only these server mutations:
+
+- mark an existing chore complete — `POST /api/chores/{id}/complete`
+- toggle grocery checked state — `POST /api/grocery/{id}/toggle`
+
+All creation, editing, deletion, assignment, and household content configuration
+happen in the **Family Hub web UI**.
 
 **Settings** (host / port / write token) is opened only from **Diagnostics →
 Open Settings** — not from the bottom nav. That screen is device connectivity

@@ -3,10 +3,10 @@
 **Date:** 2026-07-17  
 **Status update (2026-07-26):** Live product is **household-only**. Child panel binary/env and rewards/behavior surfaces were archived out of tree. Treat child sections below as **ARCHIVED historical inventory**, not an active build target.
 
-| Live / archived | Path |
+| Live / archived | Notes |
 |---|---|
-| Child panel archive | `/run/media/stitch/data3/Operating/pi-iot/family-hub-child-panel-archive-20260726/` ([archive/CHILD_PANEL_MOVED.md](../archive/CHILD_PANEL_MOVED.md)) |
-| Rewards/behavior archive | `/run/media/stitch/data3/Operating/pi-iot/family-hub-rewards-behavior-archive-20260726/` ([archive/REWARDS_BEHAVIOR_MOVED.md](../archive/REWARDS_BEHAVIOR_MOVED.md)) |
+| Child panel archive | Outside this public repo — see [archive/CHILD_PANEL_MOVED.md](../archive/CHILD_PANEL_MOVED.md) |
+| Rewards/behavior archive | Outside this public repo — see [archive/REWARDS_BEHAVIOR_MOVED.md](../archive/REWARDS_BEHAVIOR_MOVED.md) |
 | Panel UX cleanup (current) | [panel-ux-cleanup-addendum.md](panel-ux-cleanup-addendum.md) |
 
 **Scope (original):** Split dual-mode Waveshare 7B + M5 Launcher firmware into two independently buildable apps sharing low-level infra only.
@@ -46,7 +46,7 @@
 
 ## 2. Child-only code inventory — ARCHIVED
 
-> **ARCHIVED 2026-07-26.** Do not treat this section as a live build checklist. Canonical restore path: `/run/media/stitch/data3/Operating/pi-iot/family-hub-child-panel-archive-20260726/`. Orphan symbols that may still linger in the live tree (e.g. `firmware/src/child_focus_state.cpp`, child surface in `firmware/include/ui_manager.h`) are Phase 1 hygiene debt per [panel-ux-cleanup-addendum.md](panel-ux-cleanup-addendum.md) — strip from household builds; do not re-expand.
+> **ARCHIVED 2026-07-26.** Do not treat this section as a live build checklist. The previous subsystem was archived outside the public repository; restore documentation remains in the private project archive. Orphan symbols that may still linger in the live tree (e.g. `firmware/src/child_focus_state.cpp`, child surface in `firmware/include/ui_manager.h`) are Phase 1 hygiene debt per [panel-ux-cleanup-addendum.md](panel-ux-cleanup-addendum.md) — strip from household builds; do not re-expand.
 
 | Area | Files / symbols | Evidence |
 |---|---|---|
@@ -152,7 +152,7 @@ All three coexist in dual-mode firmware today. **Split target:** household binar
 
 ### Child mode (destructive rebuild) — ARCHIVED
 
-> **ARCHIVED 2026-07-26.** Historical dual-mode notes only. Live household UI: `firmware/src/household/household_ui.cpp`. Child restore: `/run/media/stitch/data3/Operating/pi-iot/family-hub-child-panel-archive-20260726/`.
+> **ARCHIVED 2026-07-26.** Historical dual-mode notes only. Live household UI: `firmware/src/household/household_ui.cpp`. Child restore: see [archive/CHILD_PANEL_MOVED.md](../archive/CHILD_PANEL_MOVED.md).
 
 1. **Enter child from household:** household tree remains allocated until `clearChildFocusScreen()` or `rebuildChildScreen()` runs.
 2. **`rebuildChildScreen()`:** `lv_obj_clean(lv_scr_act())` + `resetLvglPointers()` — full screen teardown every navigation-worthy change (`ui_manager.cpp:1542-1544`).

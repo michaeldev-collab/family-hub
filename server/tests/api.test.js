@@ -294,6 +294,45 @@ test('panel token completes chores but cannot touch the general write surface', 
   baseUrl = `http://127.0.0.1:${server.address().port}`;
 });
 
+test('write auth accepts header token only — query string token is ignored', async () => {
+  if (server) server.close();
+  const scoped = bootServer({ WRITE_TOKEN: 'header-only-secret' });
+  await new Promise((r) => (scoped.listening ? r() : scoped.on('listening', r)));
+  const scopedBase = `http://127.0.0.1:${scoped.address().port}`;
+
+  const call = (method, urlPath, body, headers = {}) =>
+    new Promise((resolve, reject) => {
+      const url = new URL(urlPath, scopedBase);
+      const req = http.request(
+        url,
+        { method, headers: { 'Content-Type': 'application/json', ...headers } },
+        (res) => {
+          let data = '';
+          res.on('data', (c) => (data += c));
+          res.on('end', () => resolve({ status: res.statusCode, body: data ? JSON.parse(data) : null }));
+        }
+      );
+      req.on('error', reject);
+      if (body !== undefined) req.write(JSON.stringify(body));
+      req.end();
+    });
+
+  const viaQuery = await call('POST', '/api/chores?token=header-only-secret', { title: 'via-query' });
+  assert.equal(viaQuery.status, 401);
+
+  const viaHeader = await call('POST', '/api/chores', { title: 'via-header' }, {
+    'x-family-hub-token': 'header-only-secret',
+  });
+  assert.equal(viaHeader.status, 201);
+
+  scoped.close();
+  await new Promise((r) => scoped.once('close', r));
+  delete process.env.WRITE_TOKEN;
+  server = bootServer();
+  await new Promise((r) => (server.listening ? r() : server.on('listening', r)));
+  baseUrl = `http://127.0.0.1:${server.address().port}`;
+});
+
 test('dinner set via event', async () => {
   const res = await request('POST', '/api/events', {
     eventId: uniqueId('dinner-set'),

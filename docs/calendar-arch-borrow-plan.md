@@ -1,7 +1,7 @@
 # Calendar Hub → Family Hub architecture borrow plan
 
 **Status:** Phase **C6 COMPLETE** (2026-07-26) — web flash/api helpers · CEO ★ · borrow track C0–C4+C6 done; C5 remains gated  
-**Reference product:** Bedroom Calendar Hub at `/run/media/stitch/data3/Operating/pi-iot/calender-display`  
+**Reference product:** Bedroom Calendar Hub (private sibling project — patterns only; not in this repo)  
 **Constraint:** Patterns only — **do not merge repos**. Household-only. Anti-list in [panel-ux-cleanup-addendum.md](panel-ux-cleanup-addendum.md) §2 still applies.
 
 ---
